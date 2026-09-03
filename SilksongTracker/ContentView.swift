@@ -1,25 +1,23 @@
 import SwiftUI
-import Playgrounds
+import ZoomableScrollView
 
 @main struct MyApp: App {
     var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+        WindowGroup { ContentView() }
     }
 }
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        ZoomableScrollView {
+            Text("Hello, world!")
+                .padding()
+                .background(.red)
+        }
+        .border(.green)
     }
 }
 
 #Preview {
     ContentView()
-}
-
-#Playground {
-    _ = 1 + 2
 }

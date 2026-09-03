@@ -1,0 +1,15 @@
+{
+  "originHash" : "d9c41a7e54925a8107bba2cdf793b7497396cff159cf418f1a77bfa8301c4bd7",
+  "pins" : [
+    {
+      "identity" : "zoomablescrollview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/gannonmg/ZoomableScrollView",
+      "state" : {
+        "revision" : "afe72ad7bd3caa430b1bab070612a8478d7a367c",
+        "version" : "1.0.2"
+      }
+    }
+  ],
+  "version" : 3
+}
