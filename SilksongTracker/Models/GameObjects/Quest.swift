@@ -24,18 +24,35 @@ extension Quest {
 
 // MARK: - Quest.Step
 extension Quest {
-    enum Step: CHS {
-        case completeObject(GameObject.ID)
-        case objective(ObjectiveKind)
+    struct Objective: CHS, SlugRepresentable {
+        let kind: Kind
+        let objectId: GameObject.ID?
+
+        private init(kind: Kind, objectId: GameObject.ID? = nil) {
+            self.kind = kind
+            self.objectId = objectId
+        }
+    }
+}
+
+extension Quest.Objective {
+    static func accept() -> Self { .init(kind: .accept) }
+    static func turnIn() -> Self { .init(kind: .turnIn) }
+    static func gather(_ objectId: GameObject.ID) -> Self { .init(kind: .gather, objectId: objectId) }
+}
+
+extension Quest.Objective {
+    enum Kind: String, CHS {
+        case accept
+        case gather
+        case turnIn
     }
 
-    enum ObjectiveKind: CHS {
-        case accept
-        case turnIn
-
-        enum CodingKeys: String, CodingKey {
-            case accept = "accept"
-            case turnIn = "turn-in"
+    var slug: String {
+        if let objectId {
+            [kind.rawValue, objectId].slugged()
+        } else {
+            [kind.rawValue].slugged()
         }
     }
 }

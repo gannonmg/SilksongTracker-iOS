@@ -16,6 +16,13 @@ struct Area: CHS {
 // MARK: - Area.ID
 extension Area {
     enum ID: String, CaseIterable, CHS {
-        case mossGrotto
+        case mossGrotto = "moss-grotto"
+
+        var mapResource: String { rawValue }
+        var accessibleName: String {
+            switch self {
+            case .mossGrotto: "Moss Grotto Map"
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@ import Foundation
 
 struct GameObject: Identifiable, CHS {
     typealias ID = String
-    var id: ID { "\(areaId.rawValue).\(detail)" }
+    var id: ID { "\(areaId.rawValue).\(detail.id)" }
 
     let name: String
     let detail: Detail

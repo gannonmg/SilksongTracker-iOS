@@ -17,7 +17,6 @@ extension GameObject {
         case bench
         case secret
         case quest
-        case questStep = "quest-step"
         case location
         case transition
     }

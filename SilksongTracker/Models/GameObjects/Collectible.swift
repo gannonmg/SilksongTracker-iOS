@@ -7,10 +7,10 @@
 
 import Foundation
 
-enum Collectible: Identifiable, CHS {
-    var id: String { stringValue }
+enum Collectible: Identifiable, CHS, SlugRepresentable {
+    var id: String { slug }
 
-    var instanceId: String {
+    var slug: String {
         var strings: [String] = [stringValue]
 
         switch self {
@@ -18,7 +18,7 @@ enum Collectible: Identifiable, CHS {
         default: break
         }
 
-        return strings.joined(separator: ".")
+        return strings.slugged()
     }
 
 

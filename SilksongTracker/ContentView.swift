@@ -10,11 +10,8 @@ import ZoomableScrollView
 struct ContentView: View {
     var body: some View {
         ZoomableScrollView {
-            Text("Hello, world!")
-                .padding()
-                .background(.red)
+            MapView(map: .mossGrotto)
         }
-        .border(.green)
     }
 }
 
