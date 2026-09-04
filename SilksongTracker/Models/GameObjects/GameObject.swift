@@ -8,18 +8,15 @@
 import Foundation
 
 struct GameObject: Identifiable, CHS {
-    typealias ID = UUID
+    typealias ID = String
+    var id: ID { "\(areaId.rawValue).\(detail)" }
 
-    let id: ID
     let name: String
+    let detail: Detail
 
-    let kind: GameObjectKind
     let areaId: Area.ID
     let mapLocation: MapLocation?
-
-    /*
     let relationships: [Relationship]
     let requirements: [Requirement]
-    */
-    let notes: String?
+    var notes: String? = nil
 }

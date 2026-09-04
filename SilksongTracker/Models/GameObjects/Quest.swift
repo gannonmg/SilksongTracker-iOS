@@ -9,7 +9,6 @@ import Foundation
 
 struct Quest: CHS {
     let id: ID
-
 }
 
 // MARK: - Quest.ID
