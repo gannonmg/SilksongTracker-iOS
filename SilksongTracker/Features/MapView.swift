@@ -8,14 +8,29 @@
 import SwiftUI
 
 struct MapView: View {
-    let map: AreaMapImage
+    let map: AreaMap
 
     var body: some View {
-        Image(uiImage: map.uiImage)
-            .resizable()
-            .scaledToFit()
-            .frame(width: map.pixelSize.width, height: map.pixelSize.height)
-            .contentShape(.rect)
-            .accessibilityLabel(map.accessibilityLabel)
+        let image = map.mapImage
+
+        ZStack(alignment: .topLeading) {
+            Image(uiImage: image.uiImage)
+                .resizable()
+                .scaledToFit()
+
+            ForEach(map.objects) { object in
+                if let location = object.mapLocation {
+                    MapObjectMarker(object: object)
+                        .position(map.imagePoint(for: location))
+                        .onAppear {
+                            print("Location: \(location)")
+                        }
+                }
+            }
+        }
+        .frame(width: image.pixelSize.width, height: image.pixelSize.height)
+        .border(.red)
+        .contentShape(.rect)
+        .accessibilityLabel(map.accessibilityLabel)
     }
 }

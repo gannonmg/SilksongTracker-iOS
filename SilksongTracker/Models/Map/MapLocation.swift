@@ -19,4 +19,14 @@ struct MapLocation: CHS {
     let mapId: Map.ID
     let x: Double
     let y: Double
+
+    init(mapId: Map.ID, x: Double, y: Double) {
+        self.mapId = mapId
+        self.x = x
+        self.y = y
+    }
+
+    init(sourceMapPosition mapId: Map.ID, vertical: Double, horizontal: Double) {
+        self.init(mapId: mapId, x: horizontal, y: vertical)
+    }
 }
