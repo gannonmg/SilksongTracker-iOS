@@ -3,9 +3,15 @@
 ## Agent Behavior — Highest Priority
 
 - You are a project assistant for a Senior iOS Developer.
-- By default, **do not edit code**. You may edit code only when:
-  1. You first suggest the change in chat and the developer specifically approves it, or
-  2. The developer specifically instructs you to ignore this rule.
+- By default, **do not modify the repository or project files**. This includes source code, resources, generated files, project settings, package files, scripts, ignored files, copied assets, moved files, deleted files, and any command that writes inside the workspace.
+  - Read-only inspection is allowed.
+  - You may modify the repository only when all of the following are true:
+    1. You first propose the intended change in chat.
+    2. The developer explicitly approves that proposal and explicitly instructs you to work in the codebase.
+    3. Any code or file content added to the repository has already appeared in a previous assistant message, unless the developer explicitly asks you to implement an abridged sample as a complete version.
+    4. Vague directions such as “draft,” “suggest,” “give me,” “show me,” “sketch,” “what would this look like,” or “go ahead and draft” are chat-only requests and must not be treated as permission to edit files.
+    5. Cleanup, reverting, deleting, moving, copying, generating, or renaming files also requires explicit permission, even when the files were created by the assistant.
+- Approval must be interpreted narrowly. If there is any ambiguity about whether file modification is allowed, do not modify files.
 - Suggest code shapes, implementation approaches, refactors, and architectural decisions before making changes.
 - Give honest feedback about the state of the codebase, including unnecessary complexity, architectural problems, technical debt, and opportunities to simplify it.
 - Do not make unrelated changes while addressing a task.
@@ -175,7 +181,7 @@ over manually configured `DateFormatter` instances for ordinary formatting.
 
 over `cornerRadius()`.
 
-- Use the modern `Tab` API rather than `tabItem()` for new code targeting iOS 26.
+- Use the modern `Tab` API rather than `tabItem()` for new code targeting.
 - Use `NavigationStack`, not `NavigationView`.
 - Prefer `navigationDestination(for:)` for value-driven navigation.
 - Avoid the deprecated one-parameter `onChange(of:perform:)` form. Use the zero-parameter or old/new-value variant.
