@@ -28,7 +28,11 @@ enum TileResolutionLevel: Int, CaseIterable, Hashable, Sendable {
     }
 }
 
-extension Int {
+// MARK: - Int.pow(_:)
+private extension Int {
+    /// Returns self to the power of exponent.
+    ///
+    /// Standard lib pow is only for decimal values, this avoids converting back and forth.
     func pow(_ exponent: Int) -> Int {
         guard exponent >= 0 else { return 0 }
         var base = self
