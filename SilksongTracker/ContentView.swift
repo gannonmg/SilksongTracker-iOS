@@ -1,5 +1,4 @@
 import SwiftUI
-import ZoomableScrollView
 
 @main struct MyApp: App {
     var body: some Scene {
@@ -9,9 +8,7 @@ import ZoomableScrollView
 
 struct ContentView: View {
     var body: some View {
-        ZoomableScrollView {
-            MapView(map: .mossGrotto)
-        }
+        TiledMapScrollView(tileSet: .silksong)
     }
 }
 
