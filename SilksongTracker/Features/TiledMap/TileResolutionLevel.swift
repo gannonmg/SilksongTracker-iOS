@@ -20,9 +20,9 @@ enum TileResolutionLevel: Int, CaseIterable, Hashable, Sendable {
 
     static func preferredResolution(for zoomScale: CGFloat) -> TileResolutionLevel {
         switch zoomScale {
-        case ..<2: .lowest
-        case ..<3: .low
-        case ..<4: .high
+        case ..<1.35: .lowest
+        case ..<2.5: .low
+        case ..<5: .high
         default: .highest
         }
     }
