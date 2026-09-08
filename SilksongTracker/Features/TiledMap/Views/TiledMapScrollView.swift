@@ -33,20 +33,13 @@ enum ZoomConfig {
     }
 }
 
-struct TiledMapScrollView<Overlay: View>: View {
+struct TiledMapScrollView: View {
 
     @Environment(\.scrollViewport) private var scrollViewport
 
     @State private var zoomResetCommit: ZoomResetCommit?
     @State private var effectiveContentScale: CGFloat = 1
     @State private var currentResolution: TileResolutionLevel = .lowest
-
-    // MARK: - Init
-    let overlay: () -> Overlay
-
-    init(@ContentBuilder overlay: @escaping () -> Overlay) {
-        self.overlay = overlay
-    }
 
     // MARK: - Body
     var body: some View {
@@ -58,8 +51,7 @@ struct TiledMapScrollView<Overlay: View>: View {
         ) {
             TiledMapContent(
                 currentResolution: currentResolution,
-                effectiveContentScale: effectiveContentScale,
-                overlay: overlay
+                effectiveContentScale: effectiveContentScale
             )
         }
     }
@@ -96,13 +88,3 @@ struct TiledMapScrollView<Overlay: View>: View {
         )
     }
 }
-
-// MARK: - Empty Overlay
-extension TiledMapScrollView where Overlay == EmptyView {
-    init() {
-        self.init() {
-            EmptyView()
-        }
-    }
-}
-

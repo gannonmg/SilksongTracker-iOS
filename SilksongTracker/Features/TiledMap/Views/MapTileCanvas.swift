@@ -11,10 +11,10 @@ struct MapTileCanvas: View {
     @Environment(TileImageCache.self) var imageCache
 
     let tile: MapTile
-    let contentSize: CGSize
+    let tileLength: CGFloat
 
     var body: some View {
-        let frame = tile.frame(in: contentSize)
+        let frame = tile.frame(with: tileLength)
 
         Canvas { context, size in
             guard let image = imageCache.cachedImage(for: tile.id) else { return }

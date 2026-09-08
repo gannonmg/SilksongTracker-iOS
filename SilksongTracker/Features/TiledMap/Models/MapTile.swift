@@ -18,14 +18,12 @@ struct MapTile: Identifiable, Hashable, Sendable {
     let x: Int
     let y: Int
 
-    func frame(in contentSize: CGSize) -> CGRect {
-        let tileSideLength = contentSize.width / CGFloat(level.edgeTileCount)
-
-        return CGRect(
-            x: CGFloat(x) * tileSideLength,
-            y: CGFloat(y) * tileSideLength,
-            width: tileSideLength,
-            height: tileSideLength
+    func frame(with tileLength: CGFloat) -> CGRect {
+        CGRect(
+            x: CGFloat(x) * tileLength,
+            y: CGFloat(y) * tileLength,
+            width: tileLength,
+            height: tileLength
         )
     }
 }

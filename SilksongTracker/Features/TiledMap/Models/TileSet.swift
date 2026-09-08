@@ -26,14 +26,16 @@ struct TileSet: Hashable, Sendable {
         let xRange = tileCoordinateRange(in: rect.minX...rect.maxX, tileCount: resolution.edgeTileCount, tileLength: tileLength)
         let yRange = tileCoordinateRange(in: rect.minY...rect.maxY, tileCount: resolution.edgeTileCount, tileLength: tileLength)
 
-        return yRange.flatMap { y in
+        let tiles = yRange.flatMap { y in
             xRange.map { x in
                 MapTile(level: resolution, x: x, y: y)
             }
         }
+
+        return tiles
     }
 
-    private static func bufferedVisibleRect(from viewport: CGRect, contentSize: CGSize) -> CGRect {
+    static func bufferedVisibleRect(from viewport: CGRect, contentSize: CGSize) -> CGRect {
         let contentRect = CGRect(origin: .zero, size: contentSize)
         guard !viewport.isEmpty else { return contentRect }
 

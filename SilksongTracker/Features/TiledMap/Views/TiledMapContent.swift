@@ -8,19 +8,27 @@
 import SwiftUI
 import ZoomableScrollView
 
-struct TiledMapContent<Overlay: View>: View {
+struct TiledMapContent: View {
 
     @State private var imageCache = TileImageCache()
 
     let currentResolution: TileResolutionLevel
     let effectiveContentScale: CGFloat
-    let overlay: () -> Overlay
 
     @Environment(\.scrollViewport) private var scrollViewport
+    @Environment(MapDataViewModel.self) private var viewModel
 
     var body: some View {
         let contentSize = TileSet.contentSize(effectiveScale: effectiveContentScale)
+        let tileLength = contentSize.width / CGFloat(currentResolution.edgeTileCount)
+
         let tiles = TileSet.visibileTiles(
+            in: scrollViewport,
+            at: currentResolution,
+            contentSize: contentSize
+        )
+
+        let markers = viewModel.visibleItems(
             in: scrollViewport,
             at: currentResolution,
             contentSize: contentSize
@@ -28,13 +36,22 @@ struct TiledMapContent<Overlay: View>: View {
 
         ZStack {
             ForEach(tiles) { tile in
-                MapTileCanvas(tile: tile, contentSize: contentSize)
+                MapTileCanvas(tile: tile, tileLength: tileLength)
             }
 
-            overlay()
+            ForEach(markers) { marker in
+                MarkerIcon(marker: marker, showName: false)
+                    .position(CGPoint(x: marker.location.x * contentSize.width,
+                                      y: marker.location.y * contentSize.height))
+            }
         }
         .environment(imageCache)
         .frame(size: contentSize)
         .contentShape(.rect)
+        .onAppear {
+            print("Display \(markers.count) markers")
+        }
     }
 }
+
+

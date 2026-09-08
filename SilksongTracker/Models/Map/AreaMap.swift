@@ -39,10 +39,3 @@ extension AreaMap {
         )
     }
 }
-
-// MARK: - Constants
-extension AreaMap {
-    static let mossGrotto = AreaMap(areaId: .mossGrotto,
-                                    visibleWorldRect: CGRect(x: 68, y: -745.5, width: 242.25, height: 169.25),
-                                    objects: .mossGrottoObjects)
-}
