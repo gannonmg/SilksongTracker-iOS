@@ -58,7 +58,6 @@ struct TiledMapScrollView<Overlay: View>: View {
 
     // MARK: Zoom
     private func onZoomEvent(_ event: ZoomEvent) {
-        print("Current scale is: \(effectiveContentScale * event.scale)")
         let rawTotalScale = effectiveContentScale * event.scale
         guard rawTotalScale <= effectiveZoomRange.upperBound else { return }
 
@@ -85,10 +84,8 @@ struct TiledMapScrollView<Overlay: View>: View {
 }
 
 struct TiledMapContent<Overlay: View>: View {
-    // MARK: - Cache
-    @State private var images: [MapTileID: UIImage] = [:]
-    @State private var loadingIDs: Set<MapTileID> = []
-    @State private var missingIDs: Set<MapTileID> = []
+
+    @State private var imageCache = TileImageCache()
 
     let tileSet: TileSet
     let currentResolution: TileResolutionLevel
@@ -122,14 +119,14 @@ struct TiledMapContent<Overlay: View>: View {
         let frame = tile.frame(in: contentSize)
 
         Canvas { context, size in
-            guard let image = cachedImage(for: tile.id) else { return }
+            guard let image = imageCache.cachedImage(for: tile.id) else { return }
             let bounds = CGRect(origin: .zero, size: size)
             context.draw(Image(uiImage: image), in: bounds)
         }
         .frame(width: frame.width, height: frame.height)
         .position(x: frame.midX, y: frame.midY)
         .task(id: tile.id) {
-            await loadImage(for: tile.id)
+            await imageCache.loadImage(for: tile.id)
         }
     }
 }
@@ -188,43 +185,6 @@ extension TiledMapScrollView where Overlay == EmptyView {
         self.init(tileSet: tileSet) {
             EmptyView()
         }
-    }
-}
-
-// MARK: - Cache Functions
-extension TiledMapContent {
-    func cachedImage(for id: MapTileID) -> UIImage? {
-        images[id]
-    }
-
-    /// Seeks a lower resolution version of the current tile as a placeholder
-    func bestPlaceholder(for ids: [MapTileID]) -> (id: MapTileID, image: UIImage)? {
-        ids.compactMap { id in self.images[id].map { (id, $0) } }.first
-    }
-
-    func loadBestAvailablePlaceholders(_ ids: [MapTileID]) async {
-        for id in ids.reversed() {
-            guard !Task.isCancelled else { return }
-            await loadImage(for: id)
-        }
-    }
-
-    func loadImage(for id: MapTileID) async {
-        guard images[id] == nil, !loadingIDs.contains(id), !missingIDs.contains(id) else { return }
-
-        loadingIDs.insert(id)
-        defer { loadingIDs.remove(id) }
-
-        guard let url = Bundle.main.url(
-            forResource: id.resourceName,
-            withExtension: "webp"
-        ) else {
-            missingIDs.insert(id)
-            return
-        }
-
-        guard !Task.isCancelled, let image = UIImage(contentsOfFile: url.path) else { return }
-        images[id] = image
     }
 }
 
