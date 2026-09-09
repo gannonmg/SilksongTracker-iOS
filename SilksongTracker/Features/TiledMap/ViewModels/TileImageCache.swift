@@ -44,4 +44,16 @@ final class TileImageCache {
         guard !Task.isCancelled, let image = UIImage(contentsOfFile: url.path) else { return }
         images[id] = image
     }
+
+    func loadHigherResolutions() {
+        Task.detached {
+            for resolution in [TileResolutionLevel.low, .high, .highest] {
+                for x in 0..<resolution.edgeTileCount {
+                    for y in 0..<resolution.edgeTileCount {
+                        await self.loadImage(for: MapTile(level: resolution, x: x, y: y).id)
+                    }
+                }
+            }
+        }
+    }
 }

@@ -34,24 +34,29 @@ struct TiledMapContent: View {
             contentSize: contentSize
         )
 
-        ZStack {
-            ForEach(tiles) { tile in
-                MapTileCanvas(tile: tile, tileLength: tileLength)
-            }
+        Canvas(renderer: { context, size in
+            for tile in tiles {
+                guard let image = imageCache.cachedImage(for: tile.id) else {
+                    Task.detached { await imageCache.loadImage(for: tile.id) }
+                    continue
+                }
+                
+                let tileFrame = tile.frame(with: tileLength)
+                context.draw(Image(uiImage: image), in: tileFrame)
 
-            ForEach(markers) { marker in
-                MarkerIcon(marker: marker, showName: false)
-                    .position(CGPoint(x: marker.location.x * contentSize.width,
-                                      y: marker.location.y * contentSize.height))
+                for marker in markers {
+                    if let symbol = context.resolveSymbol(id: marker.iconName) {
+                        let point = marker.location * contentSize.width
+                        context.draw(symbol, at: point)
+                    }
+                }
             }
-        }
-        .environment(imageCache)
+        }, symbols: {
+            let imageIcons = Array(Set(markers.map(\.iconName)))
+            ForEach(imageIcons, id: \.self) { MarkerIcon(iconName: $0) }
+        })
         .frame(size: contentSize)
         .contentShape(.rect)
-        .onAppear {
-            print("Display \(markers.count) markers")
-        }
+        .onAppear(perform: imageCache.loadHigherResolutions)
     }
 }
-
-
