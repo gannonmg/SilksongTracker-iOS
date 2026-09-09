@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "bench_temporary.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

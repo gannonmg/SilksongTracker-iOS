@@ -25,6 +25,78 @@
 		2D83EF6730507EF000E52107 /* SilksongTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SilksongTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2DB2BE353050DFCF00C8C846 /* Exceptions for "Sources" folder in "SilksongTracker" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"original-data-main/icons/arena.png",
+				"original-data-main/icons/bellway.png",
+				"original-data-main/icons/bench.png",
+				"original-data-main/icons/boss.png",
+				"original-data-main/icons/break_req.png",
+				"original-data-main/icons/break.png",
+				"original-data-main/icons/clawline_req.png",
+				"original-data-main/icons/clawline.png",
+				"original-data-main/icons/clinggrip_req.png",
+				"original-data-main/icons/clinggrip.png",
+				"original-data-main/icons/collectibles.png",
+				"original-data-main/icons/contributorMarker.png",
+				"original-data-main/icons/crests.png",
+				"original-data-main/icons/crossstitch.png",
+				"original-data-main/icons/drifterscloak_req.png",
+				"original-data-main/icons/drifterscloak.png",
+				"original-data-main/icons/faydowncloak_req.png",
+				"original-data-main/icons/faydowncloak.png",
+				"original-data-main/icons/items.png",
+				"original-data-main/icons/lever_req.png",
+				"original-data-main/icons/lever.png",
+				"original-data-main/icons/locket.png",
+				"original-data-main/icons/lostFlea.png",
+				"original-data-main/icons/map.png",
+				"original-data-main/icons/mapedge.png",
+				"original-data-main/icons/mask.png",
+				"original-data-main/icons/needlestrike.png",
+				"original-data-main/icons/needolin_req.png",
+				"original-data-main/icons/needolin.png",
+				"original-data-main/icons/npc.png",
+				"original-data-main/icons/palenails.png",
+				"original-data-main/icons/psalm.png",
+				"original-data-main/icons/relics.png",
+				"original-data-main/icons/rosary.png",
+				"original-data-main/icons/rosarystring_machine.png",
+				"original-data-main/icons/rosarystring.png",
+				"original-data-main/icons/runerage.png",
+				"original-data-main/icons/shardbundle.png",
+				"original-data-main/icons/shards.png",
+				"original-data-main/icons/sharpdart.png",
+				"original-data-main/icons/shortcut_down.png",
+				"original-data-main/icons/shortcut_left.png",
+				"original-data-main/icons/shortcut_right.png",
+				"original-data-main/icons/shortcut_up.png",
+				"original-data-main/icons/silksoar_req.png",
+				"original-data-main/icons/silksoar.png",
+				"original-data-main/icons/silkspear_req.png",
+				"original-data-main/icons/silkspear.png",
+				"original-data-main/icons/simplekey_req.png",
+				"original-data-main/icons/simplekey.png",
+				"original-data-main/icons/spool.png",
+				"original-data-main/icons/swiftstep_req.png",
+				"original-data-main/icons/swiftstep.png",
+				"original-data-main/icons/sylphsong.png",
+				"original-data-main/icons/template.png",
+				"original-data-main/icons/threadstorm.png",
+				"original-data-main/icons/toolblue.png",
+				"original-data-main/icons/toolred.png",
+				"original-data-main/icons/toolyellow.png",
+				"original-data-main/icons/upgrade.png",
+				"original-data-main/icons/vendor.png",
+				"original-data-main/icons/ventrica.png",
+				"original-data-main/icons/wish.png",
+			);
+			target = 000000000000000100000000 /* SilksongTracker */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		000000000000000000000010 /* SilksongTracker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -33,6 +105,9 @@
 		};
 		2D4B4F3C3049E31800F68A95 /* Sources */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				2DB2BE353050DFCF00C8C846 /* Exceptions for "Sources" folder in "SilksongTracker" target */,
+			);
 			path = Sources;
 			sourceTree = "<group>";
 		};

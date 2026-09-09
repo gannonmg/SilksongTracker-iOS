@@ -35,11 +35,6 @@ enum MapDataFactory {
             }
         }
 
-        let allItems = markers.values.flatMap { $0.map(\.self) }
-        let maxX = allItems.map(\.location.x).max()
-        let minX = allItems.map(\.location.x).min()
-        let maxY = allItems.map(\.location.y).max()
-        let minY = allItems.map(\.location.y).min()
         return MapData(markers: markers)
     }
 }
@@ -61,7 +56,11 @@ struct MarkerItem: Codable, Identifiable {
                                y: abs(item.position.lat) / 2048)
         self.location = location
         self.name = item.name
-        self.iconName = item.iconUrl?.replacing(".png", with: "") ?? group.defaultIconName
+        self.iconName = if let iconUrl = item.iconUrl, !iconUrl.isEmpty {
+            iconUrl.replacing(".png", with: "")
+        } else {
+            group.defaultIconName
+        }
         self.group = group
     }
 }
