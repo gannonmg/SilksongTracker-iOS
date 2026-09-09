@@ -35,20 +35,24 @@ struct TiledMapContent: View {
         )
 
         Canvas(renderer: { context, size in
+            // Keep an eye on canvas draw times while building feature
+            let start = CFAbsoluteTimeGetCurrent()
+            defer {
+                let elapsed = (CFAbsoluteTimeGetCurrent() - start) * 1000
+                print(String(format: "draw %.2f ms, \(markers.count) markers, size \(size.alignedDebugString())", elapsed))
+            }
+
             for tile in tiles {
-                guard let image = imageCache.cachedImage(for: tile.id) else {
-                    Task.detached { await imageCache.loadImage(for: tile.id) }
-                    continue
-                }
-                
+                guard let image = imageCache.cachedImage(for: tile.id) else { continue }
+
                 let tileFrame = tile.frame(with: tileLength)
                 context.draw(Image(uiImage: image), in: tileFrame)
+            }
 
-                for marker in markers {
-                    if let symbol = context.resolveSymbol(id: marker.iconName) {
-                        let point = marker.location * contentSize.width
-                        context.draw(symbol, at: point)
-                    }
+            for marker in markers {
+                if let symbol = context.resolveSymbol(id: marker.iconName) {
+                    let point = marker.location * contentSize.width
+                    context.draw(symbol, at: point)
                 }
             }
         }, symbols: {
@@ -57,6 +61,7 @@ struct TiledMapContent: View {
         })
         .frame(size: contentSize)
         .contentShape(.rect)
+        .task { await imageCache.loadImage(for: MapTile(level: .lowest, x: 0, y: 0).id) }
         .onAppear(perform: imageCache.loadHigherResolutions)
     }
 }

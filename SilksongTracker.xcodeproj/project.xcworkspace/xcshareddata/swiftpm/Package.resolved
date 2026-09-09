@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/gannonmg/ZoomableScrollView",
       "state" : {
-        "revision" : "f8715046c898c0d8fea3c425ca8cac57891890e3",
-        "version" : "1.0.7"
+        "revision" : "99ac3c367548cf7eb008281bb0487c2dd0cc61a1",
+        "version" : "1.0.8"
       }
     }
   ],

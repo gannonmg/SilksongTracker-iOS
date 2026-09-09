@@ -13,7 +13,8 @@ struct MarkerIcon: View {
 
     var body: some View {
         Image(iconName)
-            .frame(width: 14, height: 14)
+            .resizable()
+            .frame(width: 24, height: 24)
             .tag(iconName)
 //            .accessibilityLabel(marker.name)
 //            .id(marker.id)
