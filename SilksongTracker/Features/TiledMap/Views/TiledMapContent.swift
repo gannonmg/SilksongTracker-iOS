@@ -61,7 +61,10 @@ struct TiledMapContent: View {
         })
         .frame(size: contentSize)
         .contentShape(.rect)
-        .task { await imageCache.loadImage(for: MapTile(level: .lowest, x: 0, y: 0).id) }
-        .onAppear(perform: imageCache.loadHigherResolutions)
+        .task {
+            let lowestTile = MapTile(level: .lowest, x: 0, y: 0)
+            await imageCache.loadImage(for: lowestTile.id)
+            await imageCache.loadHigherResolutions()
+        }
     }
 }
