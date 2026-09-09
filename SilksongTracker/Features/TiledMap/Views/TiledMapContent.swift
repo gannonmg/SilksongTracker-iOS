@@ -30,7 +30,6 @@ struct TiledMapContent: View {
 
         let markers = viewModel.visibleItems(
             in: scrollViewport,
-            at: currentResolution,
             contentSize: contentSize
         )
 
