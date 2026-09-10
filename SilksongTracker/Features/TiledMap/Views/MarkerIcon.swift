@@ -13,7 +13,10 @@ struct MarkerIcon: View {
     var body: some View {
         Image(iconName)
             .resizable()
-            .frame(width: 24, height: 24)
+            .frame(
+                width: MarkerDisplayConfiguration.iconLength,
+                height: MarkerDisplayConfiguration.iconLength
+            )
     }
 }
 

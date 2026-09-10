@@ -103,13 +103,23 @@ final class MapDataViewModel {
     }
 
     func updateClusters(for displayScale: CGFloat) {
-        guard displayScale > 0,
-              abs(displayScale - clusteringScale) >= 0.6
-                else {
+        guard displayScale > 0 else {
             return
         }
 
-        let nextScale = max(1, displayScale.rounded())
+        let scaleDifference = abs(displayScale - clusteringScale)
+        guard scaleDifference
+                >= MarkerDisplayConfiguration.clusterScaleChangeThreshold
+        else {
+            return
+        }
+
+        let step = MarkerDisplayConfiguration.clusterScaleStep
+        let nextScale = max(
+            step,
+            (displayScale / step).rounded() * step
+        )
+
         guard nextScale != clusteringScale else {
             return
         }
