@@ -84,4 +84,13 @@ enum MarkerCategory: String, CaseIterable, Identifiable, Codable {
         case .info, .permFlags: .permFlags
         }
     }
+
+    // Clustering
+    var clusterPriority: Int {
+        switch self {
+        case .benches, .bellway, .ventrica: 2
+        case .shard, .shardItem: 0
+        default: 1
+        }
+    }
 }

@@ -17,7 +17,7 @@ enum MapDataFactory {
         for category in scriptersData.categories {
             for item in category.list {
                 if let uid = item.uid {
-                    maxUid = max(maxUid, maxUid)
+                    maxUid = max(uid, maxUid)
                     let markerItem = MarkerItem(id: uid, item: item, group: category.id.group)
                     markers[category.id, default: []].append(markerItem)
                 } else {

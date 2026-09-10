@@ -35,6 +35,7 @@ enum ZoomConfig {
 
 struct TiledMapScrollView: View {
 
+    @Environment(MapDataViewModel.self) private var viewModel
     @Environment(\.scrollViewport) private var scrollViewport
 
     @State private var zoomResetCommit: ZoomResetCommit?
@@ -61,6 +62,8 @@ struct TiledMapScrollView: View {
         // Do not zoom in past our config's zoom range maximum.
         let rawTotalScale = effectiveContentScale * event.scale
         guard rawTotalScale <= ZoomConfig.effectiveZoomRange.upperBound else { return }
+
+        viewModel.updateClusters(for: rawTotalScale)
 
         // Decide which resolution to use based on our current scale.
         let desiredResolution = TileResolutionLevel.preferredResolution(for: rawTotalScale)

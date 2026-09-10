@@ -8,26 +8,31 @@
 import SwiftUI
 
 struct MarkerIcon: View {
-
     let iconName: String
 
     var body: some View {
         Image(iconName)
             .resizable()
             .frame(width: 24, height: 24)
-            .tag(iconName)
-//            .accessibilityLabel(marker.name)
-//            .id(marker.id)
-//            .overlay(alignment: .top) {
-//                Text("\(marker.name)-\(marker.id)")
-//                    .font(.caption2.bold())
-//                    .foregroundStyle(.white)
-//                    .padding(2)
-//                    .background(.gray.opacity(0.5))
-//                    .fixedSize()
-//                    .offset(y: -24)
-//                    .zIndex(10)
-//                    .opacity(showName ? 1 : 0)
-//            }
+    }
+}
+
+struct MarkerClusterIcon: View {
+    let iconName: String
+    let count: Int
+
+    var body: some View {
+        MarkerIcon(iconName: iconName)
+            .overlay(alignment: .topTrailing) {
+                if count > 1 {
+                    Text(count, format: .number)
+                        .font(.caption2.bold())
+                        .foregroundStyle(.white)
+                        .frame(minWidth: 16, minHeight: 16)
+                        .padding(1)
+                        .background(.black.opacity(0.8), in: .circle)
+                        .offset(x: 6, y: -6)
+                }
+            }
     }
 }

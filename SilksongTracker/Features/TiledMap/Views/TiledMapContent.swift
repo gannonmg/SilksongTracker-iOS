@@ -9,7 +9,6 @@ import SwiftUI
 import ZoomableScrollView
 
 struct TiledMapContent: View {
-
     @State private var imageCache = TileImageCache()
 
     let currentResolution: TileResolutionLevel
@@ -19,8 +18,11 @@ struct TiledMapContent: View {
     @Environment(MapDataViewModel.self) private var viewModel
 
     var body: some View {
-        let contentSize = TileSet.contentSize(effectiveScale: effectiveContentScale)
-        let tileLength = contentSize.width / CGFloat(currentResolution.edgeTileCount)
+        let contentSize = TileSet.contentSize(
+            effectiveScale: effectiveContentScale
+        )
+        let tileLength =
+        contentSize.width / CGFloat(currentResolution.edgeTileCount)
 
         let tiles = TileSet.visibileTiles(
             in: scrollViewport,
@@ -28,35 +30,74 @@ struct TiledMapContent: View {
             contentSize: contentSize
         )
 
-        let markers = viewModel.visibleItems(
+        let clusters = viewModel.visibleClusters(
             in: scrollViewport,
             contentSize: contentSize
         )
 
+        let symbolIDs = Set(
+            clusters.map {
+                MarkerSymbolID(
+                    iconName: $0.representative.iconName,
+                    count: $0.members.count
+                )
+            }
+        )
+            .sorted {
+                if $0.iconName == $1.iconName {
+                    return $0.count < $1.count
+                }
+
+                return $0.iconName < $1.iconName
+            }
+
         Canvas(renderer: { context, size in
-            // Keep an eye on canvas draw times while building feature
             let start = CFAbsoluteTimeGetCurrent()
             defer {
-                let elapsed = (CFAbsoluteTimeGetCurrent() - start) * 1000
-                print(String(format: "draw %.2f ms, \(markers.count) markers, size \(size.alignedDebugString())", elapsed))
+                let elapsed =
+                (CFAbsoluteTimeGetCurrent() - start) * 1_000
+                print(
+                    String(
+                        format: "draw %.2f ms, \(clusters.count) clusters, size \(size.alignedDebugString())",
+                        elapsed
+                    )
+                )
             }
 
             for tile in tiles {
-                guard let image = imageCache.cachedImage(for: tile.id) else { continue }
+                guard let image = imageCache.cachedImage(for: tile.id) else {
+                    continue
+                }
 
-                let tileFrame = tile.frame(with: tileLength)
-                context.draw(Image(uiImage: image), in: tileFrame)
+                context.draw(
+                    Image(uiImage: image),
+                    in: tile.frame(with: tileLength)
+                )
             }
 
-            for marker in markers {
-                if let symbol = context.resolveSymbol(id: marker.iconName) {
-                    let point = marker.location * contentSize.width
-                    context.draw(symbol, at: point)
+            for cluster in clusters {
+                let symbolID = MarkerSymbolID(
+                    iconName: cluster.representative.iconName,
+                    count: cluster.members.count
+                )
+
+                guard let symbol = context.resolveSymbol(id: symbolID) else {
+                    continue
                 }
+
+                context.draw(
+                    symbol,
+                    at: cluster.location * contentSize.width
+                )
             }
         }, symbols: {
-            let imageIcons = Array(Set(markers.map(\.iconName)))
-            ForEach(imageIcons, id: \.self) { MarkerIcon(iconName: $0) }
+            ForEach(symbolIDs, id: \.self) { symbolID in
+                MarkerClusterIcon(
+                    iconName: symbolID.iconName,
+                    count: symbolID.count
+                )
+                .tag(symbolID)
+            }
         })
         .frame(size: contentSize)
         .contentShape(.rect)
@@ -66,4 +107,9 @@ struct TiledMapContent: View {
             await imageCache.loadHigherResolutions()
         }
     }
+}
+
+private struct MarkerSymbolID: Hashable {
+    let iconName: String
+    let count: Int
 }
