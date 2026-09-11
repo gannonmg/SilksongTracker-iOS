@@ -16,31 +16,29 @@ struct SidebarView: View {
                 groupSection(group: $0)
             }
         }
-        .listStyle(.sidebar)
         .padding(.horizontal)
     }
 
     @ContentBuilder
     private func groupSection(group: MarkerCategoryGroup) -> some View {
+        let categorizedItems = viewModel.spoilerFilteredItems()
+        let categories = group.categories.filter({ categorizedItems[$0] != nil })
         Section {
             DisclosureGroup {
-                ForEach(group.categories) { categorySection(category: $0) }
+                ForEach(categories) { category in
+                    let markers = categorizedItems[category, default: []]
+                    DisclosureGroup {
+                        ForEach(markers) { marker in
+                            Text("\(marker.name)")
+                        }
+                    } label: {
+                        Text("\(category.rawValue.capitalized) (\(markers.count))")
+                    }
+                }
             } label: {
-                Text("\(group.rawValue.capitalized) (\(group.categories.count))")
+                Text("\(group.label) (\(group.categories.count))")
                     .padding(.leading)
             }
-        }
-    }
-
-    @ContentBuilder
-    private func categorySection(category: MarkerCategory) -> some View {
-        let markers = viewModel.mapData.markers[category, default: []]
-        DisclosureGroup {
-            ForEach(markers) {
-                Text($0.name)
-            }
-        } label: {
-            Text("\(category.rawValue.capitalized) (\(markers.count))")
         }
     }
 }

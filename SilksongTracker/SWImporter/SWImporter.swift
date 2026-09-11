@@ -80,6 +80,7 @@ struct SWCategoryItem: Codable {
     let iconUrl: String?
     let pos: SWPosition
     let pos2: SWPosition?
+    let tags: [String]?
 
     var position: SWPosition { pos2 ?? pos }
 }

@@ -12,7 +12,7 @@ import Observation
 @MainActor
 @Observable
 final class MapDataViewModel {
-    let mapData: MapData
+    private let mapData: MapData
 
     private(set) var enabledCategories: Set<MarkerCategory>
     private(set) var clusters: [MarkerCluster]
@@ -37,6 +37,18 @@ final class MapDataViewModel {
             enabledCategories: enabledCategories,
             displayScale: 1
         )
+    }
+
+    func spoilerFilteredItems() -> [MarkerCategory: [MarkerItem]] {
+        // TODO: Store and reference the user's current Act
+        let currentAct = Act.act1
+        var filteredCategories: [MarkerCategory: [MarkerItem]] = [:]
+        for (category, items) in mapData.markers {
+            let filteredItems = items.filter { $0.act <= currentAct }
+            guard !filteredItems.isEmpty else { continue }
+            filteredCategories[category] = filteredItems
+        }
+        return filteredCategories
     }
 
     func visibleItems(
@@ -64,12 +76,8 @@ final class MapDataViewModel {
         )
 
         return MarkerCategory.allCases.flatMap { (category) -> [MarkerItem] in
-            guard enabledCategories.contains(category) else {
-                return []
-            }
-
-            return spatialIndexes[category]?
-                .markers(in: normalizedViewport) ?? []
+            guard enabledCategories.contains(category) else { return [] }
+            return spatialIndexes[category]?.markers(in: normalizedViewport) ?? []
         }
     }
 

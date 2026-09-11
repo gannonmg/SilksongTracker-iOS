@@ -47,6 +47,20 @@ enum MarkerCategoryGroup: String, CaseIterable, Identifiable, Codable {
         case .permFlags: "break"
         }
     }
+
+    var label: String {
+        switch self {
+        case .benchTransport: "Bench & Transport"
+        case .mapping: "Mapping"
+        case .abilityItems: "Abilties & Items"
+        case .upgrades: "Upgrades"
+        case .currency: "Currency"
+        case .collectibles: "Collectibles"
+        case .npcWish: "NPCs & Wishes"
+        case .battles: "Battles"
+        case .permFlags: "Permanent"
+        }
+    }
 }
 
 enum MarkerCategory: String, CaseIterable, Identifiable, Codable {
@@ -91,6 +105,14 @@ enum MarkerCategory: String, CaseIterable, Identifiable, Codable {
         case .benches, .bellway, .ventrica: 2
         case .shard, .shardItem: 0
         default: 1
+        }
+    }
+
+    // Acts
+    var minimumAct: Act {
+        switch self {
+        case .ventrica: .act2
+        default: .act1
         }
     }
 }
